@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GALINJUEGOS</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:16px;background:#17152f;font-family:Arial,sans-serif;color:#fff}
+header{background:#30205a;border-radius:20px;padding:22px;margin-bottom:16px}header h1{margin:0;font-size:clamp(25px,5vw,38px)}
+.panel{background:#272343;border-radius:18px;padding:16px;margin-bottom:16px}.panel label{display:block;margin-bottom:8px;font-weight:bold}
+input{width:100%;padding:12px;border:2px solid #a78bfa;border-radius:12px;font-size:16px;margin-bottom:10px}
+button{border:0;border-radius:30px;padding:12px 16px;background:#303030;color:white;font-size:16px;font-weight:bold;cursor:pointer}button:hover{filter:brightness(1.15)}.save{background:#7c3aed;width:100%}
+.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{padding:12px;border-radius:20px;min-width:0}.orange{background:#f97316}.blue{background:#2563eb}.green{background:#16a34a}.pink{background:#db2777}
+.thumb{background:#ffffff55;border-radius:14px;padding:24px;text-align:center;font-size:34px}.card h2{font-size:20px;margin:12px 0}.play{width:100%;background:#30205a}
+#gameFrameWrap{display:none;margin-top:12px;background:#fff;border-radius:14px;overflow:hidden}iframe{width:100%;height:480px;border:0}#gameMessage{font-size:13px;line-height:1.4;margin:10px 0 0}
+.add{margin-top:16px;padding:22px;text-align:center;background:#272343;border-radius:20px}
+@media(max-width:520px){body{padding:10px}.games{grid-template-columns:1fr}iframe{height:400px}}
+</style></head><body>
+<header><h1>GALINJUEGOS</h1></header>
+<section class="panel"><label for="gameUrl">Conectar Survival World</label><input id="gameUrl" type="url" placeholder="Pega aquí la URL de tu juego (https://...)"/><button class="save" onclick="guardarURL()">GUARDAR URL</button><p id="status" aria-live="polite"></p></section>
+<div class="games">
+<div class="card orange"><div class="thumb">🚀</div><h2>Survival World</h2><button class="play" onclick="jugar()">JUGAR</button><div id="gameFrameWrap"><iframe id="gameFrame" title="Survival World" allowfullscreen></iframe></div></div>
+<div class="card blue"><div class="thumb">🚗</div><h2>Juego 2</h2><button class="play" onclick="alert('Añade este juego más adelante')">JUGAR</button></div>
+<div class="card green"><div class="thumb">🧩</div><h2>Juego 3</h2><button class="play" onclick="alert('Añade este juego más adelante')">JUGAR</button></div>
+<div class="card pink"><div class="thumb">⚔️</div><h2>Juego 4</h2><button class="play" onclick="alert('Añade este juego más adelante')">JUGAR</button></div>
+</div><div class="add"><h2>＋ Añadir más juegos</h2><p>¡Tu colección puede crecer todo lo que quieras!</p></div>
+<script>
+const input=document.getElementById('gameUrl'),status=document.getElementById('status'),frame=document.getElementById('gameFrame'),wrap=document.getElementById('gameFrameWrap');
+function validar(url){try{let u=new URL(url);return u.protocol==='https:'||u.protocol==='http:'}catch(e){return false}}
+function cargar(url){if(!url)return;input.value=url;frame.src=url;wrap.style.display='block';msg.textContent='URL guardada. Si el juego no aparece, puede que su página bloquee la inserción; usa JUGAR para abrirlo en otra pestaña.'}
+function guardarURL(){let url=input.value.trim();if(!validar(url)){status.textContent='Pega una URL válida que empiece por https:// o http://';return}localStorage.setItem('galinjuegos_survival_url',url);cargar(url);status.textContent='¡Guardado! Survival World ya tiene su URL.'}
+function jugar(){let url=localStorage.getItem('galinjuegos_survival_url');if(!url){status.textContent='Primero pega la URL y pulsa GUARDAR URL.';return}window.open(url,'_blank','noopener')}
+window.addEventListener('DOMContentLoaded',()=>{let saved=localStorage.getItem('galinjuegos_survival_url');if(saved)cargar(saved)});
+</script></body></html>
